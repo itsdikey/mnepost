@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CGPost.Models.Packages;assembly=CGPost.Models"
+             xmlns:contentVM="clr-namespace:CGPost.Models.ViewModels;assembly=CGPost.Models"
+             xmlns:viewModels="clr-namespace:CGPost.ViewModels;assembly=CGPost.ViewModels"
+             x:Class="CGPOSTMAUI.MainPage"
+             Background="{StaticResource White}"
+             x:DataType="viewModels:PackagesPageViewModel">
+
+    <Grid Padding="8">
+        <VerticalStackLayout>
+            <Grid Margin="0,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Packages" Style="{StaticResource HeaderStyle}"/>
+            </Grid>
+            <ListView BackgroundColor="Transparent" 
+                  x:Name="PackageView"
+                  SeparatorVisibility="Default"
+                  SelectionMode="None"
+                  ItemsSource="{Binding Packages}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete" BackgroundColor="{StaticResource Red}" Command="{Binding Source={x:Reference PackageView}, Path=BindingContext.DeletePackageCommand}" CommandParameter="{Binding .}"/>
+                                        <SwipeItem Text="Archive" BackgroundColor="{StaticResource Yellow}"  Command="{Binding Source={x:Reference PackageView}, Path=BindingContext.ArchivePackageCommand}"  CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                
+
+                                <Grid Grid.Column="1" Padding="6">
+                                    <VerticalStackLayout x:DataType="contentVM:PackageEntryViewModel">
+                                        <Label Text="{Binding Name}"/>
+                                        <Label Text="{Binding TrackingNumber}"/>
+                                        <Label Text="{Binding LastTrackingInfo}"/>
+                                    </VerticalStackLayout>
+                                    <Button BackgroundColor="Transparent" Command="{Binding Source={x:Reference PackageView}, Path=BindingContext.ClickedOnItemCommand}" CommandParameter="{Binding .}" Margin="-5" />
+                                </Grid>
+                               
+                            </SwipeView>
+
+                        </ViewCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+       
+        <AbsoluteLayout>
+            <ImageButton 
+                Command="{Binding AddPackageCommand}"
+                Style="{StaticResource addButtonStyle}"
+                CornerRadius="30"
+                AbsoluteLayout.LayoutFlags="PositionProportional"  
+                AbsoluteLayout.LayoutBounds=".95,.95,60,60" />
+        </AbsoluteLayout>
+    </Grid>
+
+</ContentPage>

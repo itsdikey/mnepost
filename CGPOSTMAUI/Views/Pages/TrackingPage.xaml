@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:modelsTracking="clr-namespace:CGPost.Models.Tracking;assembly=CGPost.Models"
+             xmlns:modelsPackage="clr-namespace:CGPost.Models.Packages;assembly=CGPost.Models"
+             xmlns:viewModels="clr-namespace:CGPost.ViewModels;assembly=CGPost.ViewModels"
+             x:Class="CGPost.Views.Pages.TrackingPage"
+             xmlns:local="clr-namespace:CGPost.Controls"
+             Background="{StaticResource White}"
+             Title="TrackingPage"
+             x:DataType="viewModels:TrackingPageViewModel">
+    <Grid>
+        <VerticalStackLayout>
+            <VerticalStackLayout>
+                <Grid ColumnDefinitions="*, 60">
+                    <Label Text="{Binding Package.Name}" Style="{StaticResource HeaderStyle}"/>
+                    <ImageButton 
+                        Grid.Column="1"
+                          Style="{StaticResource homeButton}"
+                          Command="{Binding BackButtonCommand}"
+                        HeightRequest="32" 
+                        WidthRequest="32"/>
+                </Grid>
+                <Label Text="{Binding Package.LastTrackingInfo}"/>
+            </VerticalStackLayout>
+
+            <ListView
+                 x:Name="TrackingEventsView"
+                 SelectionMode="None"
+                 RowHeight="70"
+                 CachingStrategy="RecycleElementAndDataTemplate"
+                 IsRefreshing="{Binding IsRefreshing}"
+                 ItemsSource="{Binding Data}">
+                 <ListView.ItemTemplate>
+                     <DataTemplate x:DataType="modelsTracking:TrackingDataPoint">
+                         <ViewCell>
+                             <Grid>
+                                 <Grid.ColumnDefinitions>
+                                     <ColumnDefinition Width="40"/>
+                                     <ColumnDefinition/>
+                                 </Grid.ColumnDefinitions>
+                                 <local:StatusOfPackageView IsLast="{Binding IsLast}"/>
+                                 <VerticalStackLayout Grid.Column="1"  Padding="6">
+                                     <Label Text="{Binding DateView}"/>
+                                     <Label Text="{Binding PostIndex}"/>
+                                     <Label Text="{Binding Description}"/>
+                                 </VerticalStackLayout>
+                             </Grid>
+                         </ViewCell>
+
+                     </DataTemplate>
+                 </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+         <AbsoluteLayout>
+             <ImageButton 
+              Style="{StaticResource editButtonStyle}"
+              Command="{Binding EditButtonCommand}"
+              CornerRadius="30"
+              AbsoluteLayout.LayoutFlags="PositionProportional"  
+              AbsoluteLayout.LayoutBounds=".95,.95,60,60" />
+         </AbsoluteLayout>
+    </Grid>
+   
+    
+</ContentPage>
